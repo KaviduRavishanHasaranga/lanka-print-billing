@@ -1,4 +1,4 @@
-# Lanka Print Studio — Billing System
+# Printify Hub — Billing System
 
 A full-stack billing and invoice management system built for printing and design businesses.
 
