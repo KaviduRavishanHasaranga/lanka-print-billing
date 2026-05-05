@@ -576,14 +576,23 @@ const BillPreview = () => {
             windowWidth: sourceElement.scrollWidth,
             windowHeight: sourceElement.scrollHeight,
             onclone: (clonedDoc) => {
-              // html2canvas parses CSS stylesheets directly, so we must scrub
-              // Tailwind v4's oklch() colors before the render pass.
+              // In production, Vite outputs a linked .css file containing
+              // Tailwind v4 oklch() colors. html2canvas tries to parse ALL
+              // stylesheets in the cloned document — remove linked ones so it
+              // never hits an oklch() value. All computed styles are already
+              // inlined by applyComputedStyles() above, so nothing is lost.
+              clonedDoc
+                .querySelectorAll('link[rel="stylesheet"]')
+                .forEach((el) => el.remove());
+
+              // Also scrub any remaining inline <style> tags (handles dev mode
+              // where Tailwind injects via <style> instead of a .css file).
               clonedDoc.querySelectorAll("style").forEach((styleEl) => {
                 if (styleEl.textContent.includes("oklch")) {
                   styleEl.textContent = styleEl.textContent
                     // Background oklch → white
                     .replace(/background(?:-color)?:[^;]*oklch\([^)]+\)[^;]*/g, "background-color: #ffffff")
-                    // Border / outline oklch → light gray (preserves border-gray-200 appearance)
+                    // Border / outline oklch → light gray
                     .replace(/border(?:-[\w-]+)?:[^;]*oklch\([^)]+\)[^;]*/g, "border-color: #e5e7eb")
                     .replace(/outline(?:-color)?:[^;]*oklch\([^)]+\)[^;]*/g, "outline-color: #e5e7eb")
                     // Any remaining oklch (text colors etc.) → black
