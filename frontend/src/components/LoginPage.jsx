@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Printer, LogIn, Eye, EyeOff } from 'lucide-react';
+import { LogIn, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const LoginPage = () => {
@@ -37,10 +37,10 @@ const LoginPage = () => {
             <div className="w-full max-w-md">
                 {/* Logo & Branding */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-lg mb-4">
-                        <Printer className="text-white" size={32} />
+                    <div className="inline-flex items-center justify-center w-20 h-20 mb-2">
+                        <img src="/printlogo.png" alt="Printify Hub Logo" className="w-full h-full object-contain" />
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-800">Lanka Print Studio</h1>
+                    <h1 className="text-3xl font-bold text-gray-800">Printify Hub</h1>
                     <p className="text-gray-500 mt-1">Billing & Invoice Management</p>
                 </div>
 
@@ -101,7 +101,7 @@ const LoginPage = () => {
                 </div>
 
                 <p className="text-center text-xs text-gray-400 mt-6">
-                    &copy; {new Date().getFullYear()} Lanka Print Studio. All rights reserved.
+                    &copy; {new Date().getFullYear()} Printify Hub. All rights reserved.
                 </p>
             </div>
         </div>

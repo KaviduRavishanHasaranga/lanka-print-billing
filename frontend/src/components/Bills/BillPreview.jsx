@@ -5,7 +5,7 @@ import { ArrowLeft, Download, Printer } from "lucide-react";
 import toast from "react-hot-toast";
 
 // A4 Invoice Component for printing — Professional Blue Theme
-const INVOICE_BLUE = "#2F75B5";
+const INVOICE_BLUE = "#4b4b4bff";
 
 // Convert a number to English words (supports up to crores)
 function numberToWords(n) {
@@ -49,7 +49,12 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
         {/* ====== HEADER ====== */}
         <div className="flex justify-between items-start mb-1">
           <div>
-            <h1 className="text-[26px] font-bold text-gray-900 mb-0 leading-tight">
+            <img
+              src="/printlogo.png"
+              alt="Printify Hub Logo"
+              style={{ height: "85px", width: "auto", marginBottom: "0px", objectFit: "contain" }}
+            />
+            <h1 className="text-[26px] font-bold text-gray-900 mb-2 leading-tight">
               {companyDetails.name}
             </h1>
             <div className="text-[14px] text-gray-600 mt-1 space-y-px">
@@ -275,7 +280,7 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
                     })()}
                   </td>
                   <td className="px-3 py-1.5 text-center text-[12.5px]">
-                    {parseInt(item.quantity)}
+                    {item.quantity}
                   </td>
                   <td className="px-3 py-1.5 text-right text-[12.5px]">
                     {fmt(item.rate)}
@@ -299,7 +304,9 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
             >
               Thank you for your business!
             </p>
-          </div>          {/* Right: Totals Table */}
+          </div>
+
+          {/* Right: Totals Table */}
           <table className="border-collapse" style={{ minWidth: 300 }}>
             <tbody>
               <tr className="border-b border-gray-200">
@@ -313,6 +320,19 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
                   {fmt(bill.subtotal)}
                 </td>
               </tr>
+              {advancePaid > 0 && (
+                <tr className="border-b border-gray-200">
+                  <td
+                    className="px-4 py-1.5 text-right font-semibold text-[12.5px] text-gray-700"
+                    colSpan={2}
+                  >
+                    ADVANCE PAID
+                  </td>
+                  <td className="px-4 py-1.5 text-right text-[12.5px] font-medium" style={{ minWidth: 110 }}>
+                    {fmt(advancePaid)}
+                  </td>
+                </tr>
+              )}
               <tr>
                 <td
                   className="px-4 py-1.75 text-right font-bold text-white text-[13px]"
@@ -330,40 +350,7 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
                   className="px-4 py-1.75 text-right font-bold text-white text-[14px]"
                   style={{ background: INVOICE_BLUE, minWidth: 110 }}
                 >
-                  {fmt(bill.total)}
-                </td>
-              </tr>
-              <tr className="border-b border-gray-200">
-                <td
-                  className="px-4 py-1.5 text-right font-semibold text-[12.5px]"
-                  style={{ color: "#16a34a" }}
-                  colSpan={2}
-                >
-                  PAID
-                </td>
-                <td
-                  className="px-4 py-1.5 text-right text-[12.5px] font-semibold"
-                  style={{ color: "#16a34a", minWidth: 110 }}
-                >
-                  {fmt(advancePaid)}
-                </td>
-              </tr>
-              <tr>
-                <td
-                  className="px-4 py-1.5 text-right font-bold text-[12.5px]"
-                  style={{ color: advancePaid >= parseFloat(bill.total) ? "#16a34a" : "#dc2626" }}
-                  colSpan={2}
-                >
-                  BALANCE
-                </td>
-                <td
-                  className="px-4 py-1.5 text-right text-[13px] font-bold"
-                  style={{
-                    color: advancePaid >= parseFloat(bill.total) ? "#16a34a" : "#dc2626",
-                    minWidth: 110,
-                  }}
-                >
-                  {fmt(Math.max(parseFloat(bill.total) - advancePaid, 0))}
+                  {fmt(advancePaid > 0 ? finalTotal : bill.total)}
                 </td>
               </tr>
             </tbody>
@@ -401,45 +388,15 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
           </div>
         </div>
 
-        {/* ====== PAYMENT HISTORY ====== */}
-        {bill.payments && bill.payments.length > 0 && (
-          <div className="mt-4">
-            <div
-              className="text-white text-[12px] font-bold px-3 py-1.25"
-              style={{ background: INVOICE_BLUE }}
-            >
-              PAYMENT HISTORY
-            </div>
-            <table className="w-full border-collapse mt-1">
-              <thead>
-                <tr style={{ background: "#f3f4f6" }}>
-                  <th className="text-left px-3 py-1 text-[11px] font-semibold text-gray-600">Date</th>
-                  <th className="text-left px-3 py-1 text-[11px] font-semibold text-gray-600">Method</th>
-                  <th className="text-left px-3 py-1 text-[11px] font-semibold text-gray-600">Reference</th>
-                  <th className="text-right px-3 py-1 text-[11px] font-semibold text-gray-600">Amount (LKR)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bill.payments.map((payment, idx) => (
-                  <tr key={payment.id ?? idx} className="border-b border-gray-100">
-                    <td className="px-3 py-1 text-[11.5px] text-gray-700">
-                      {new Date(payment.payment_date).toLocaleDateString("en-LK")}
-                    </td>
-                    <td className="px-3 py-1 text-[11.5px] text-gray-700 capitalize">
-                      {payment.payment_method?.replace("_", " ")}
-                    </td>
-                    <td className="px-3 py-1 text-[11.5px] text-gray-500">
-                      {payment.reference_number || "—"}
-                    </td>
-                    <td className="px-3 py-1 text-right text-[11.5px] font-medium text-gray-800">
-                      {fmt(payment.amount)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+
+        {/* ====== BOTTOM CONTACT INFO ====== */}
+        <div className="text-center mt-10 text-[11px] text-gray-500">
+          <p>If you have any questions about this invoice, please contact</p>
+          <p className="font-semibold text-gray-700">
+            {companyDetails.ownerName}, {companyDetails.phone},{" "}
+            {companyDetails.email}
+          </p>
+        </div>
       </div>
 
     </div>
@@ -460,7 +417,7 @@ const BillPreview = () => {
 
   // Mock company details - in real app, fetch from config/API
   const companyDetails = {
-    name: "Lanka Print Studio",
+    name: "Printify Hub",
     ownerName: "H.K.K.R. Hasaranga",
     address: "No 26, Sethsiri Uyana, Nagoda, Dodangoda",
     phone: "(078) 702-1394",
@@ -754,39 +711,21 @@ const BillPreview = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Created</span>
-                <span>
-                  {new Date(bill.created_at).toLocaleDateString("en-LK")}{" "}
-                  {new Date(bill.created_at).toLocaleTimeString("en-LK", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
-              </div>
-
-              <hr className="border-gray-200" />
-
-              <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium">
-                  LKR {parseFloat(bill.subtotal).toLocaleString("en-LK", { minimumFractionDigits: 2 })}
-                </span>
+                <span>{new Date(bill.created_at).toLocaleDateString()}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Total</span>
                 <span className="font-bold">
-                  LKR {parseFloat(bill.total).toLocaleString("en-LK", { minimumFractionDigits: 2 })}
+                  LKR {parseFloat(bill.total).toLocaleString("en-LK")}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Paid</span>
-                <span className="font-semibold text-green-600">
-                  LKR {totalPaid.toLocaleString("en-LK", { minimumFractionDigits: 2 })}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-semibold text-gray-700">Balance</span>
-                <span className={`font-bold ${outstandingAmount > 0 ? "text-red-600" : "text-green-600"}`}>
-                  LKR {outstandingAmount.toLocaleString("en-LK", { minimumFractionDigits: 2 })}
+                <span className="text-gray-600">Paid to date</span>
+                <span className="font-medium text-green-600">
+                  LKR{" "}
+                  {bill.payments
+                    .reduce((sum, p) => sum + parseFloat(p.amount || 0), 0)
+                    .toLocaleString("en-LK")}
                 </span>
               </div>
             </div>

@@ -72,11 +72,11 @@ const Layout = ({ children }) => {
             >
                 <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200">
                     <div className={`flex items-center gap-2 ${!isSidebarOpen && !isMobile ? 'justify-center w-full' : ''}`}>
-                         <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                            <Printer />
+                         <div className="w-14 h-14 flex items-center justify-center">
+                            <img src="printlogo.png" alt="logo" />
                          </div>
                          {(isSidebarOpen || isMobile) && (
-                            <h1 className="font-bold text-xl text-gray-800 truncate">Lanka Print Studio</h1>
+                            <h1 className="font-bold text-xl text-gray-800 truncate">Printify Hub</h1>
                          )}
                     </div>
                     {/* Only show toggle button on desktop here, mobile toggle is in header */}
