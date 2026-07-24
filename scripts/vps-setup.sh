@@ -8,11 +8,11 @@
 set -e  # Exit on any error
 
 APP_DIR="/var/www/billing-system"
-REPO_URL="https://github.com/KaviduRavishanHasaranga/lanka-print-billing.git"
+REPO_URL="https://github.com/KaviduRavishanHasaranga/printdock-billing.git"
 PM2_LOG_DIR="/var/log/pm2"
 
 echo "================================================================"
-echo "  🚀 Lanka Print Billing System — VPS Setup"
+echo "  🚀 PrintDock Billing System — VPS Setup"
 echo "================================================================"
 echo ""
 
