@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
                             <img src="printlogo.png" alt="logo" />
                          </div>
                          {(isSidebarOpen || isMobile) && (
-                            <h1 className="font-bold text-xl text-gray-800 truncate">Printify Hub</h1>
+                            <h1 className="font-bold text-xl text-gray-800 truncate">PrintDock</h1>
                          )}
                     </div>
                     {/* Only show toggle button on desktop here, mobile toggle is in header */}

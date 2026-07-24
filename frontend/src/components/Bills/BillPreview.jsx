@@ -51,7 +51,7 @@ const InvoicePrint = React.forwardRef(({ bill, companyDetails }, ref) => {
           <div>
             <img
               src="/printlogo.png"
-              alt="Printify Hub Logo"
+              alt="PrintDock Logo"
               style={{ height: "85px", width: "auto", marginBottom: "0px", objectFit: "contain" }}
             />
             <h1 className="text-[26px] font-bold text-gray-900 mb-2 leading-tight">
@@ -417,11 +417,11 @@ const BillPreview = () => {
 
   // Mock company details - in real app, fetch from config/API
   const companyDetails = {
-    name: "Printify Hub",
+    name: "PrintDock",
     ownerName: "H.K.K.R. Hasaranga",
     address: "No 26, Sethsiri Uyana, Nagoda, Dodangoda",
-    phone: "(078) 702-1394",
-    email: "kavidu.ravishan11@gmail.com",
+    phone: "076 682-3651 / 078-662-3651",
+    email: "printdock@gmail.com",
     gstin: "",
     bankName: "Bank of Ceylon",
     accountNumber: "7679048",
