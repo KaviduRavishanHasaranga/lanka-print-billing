@@ -12,7 +12,7 @@ jobs:
   deploy:
     name: Deploy to Ubuntu VPS
     runs-on: ubuntu-latest
-    environment: SGP_VPS
+    environment: TEMP_VPS
     
     steps:
       - name: 📥 Checkout code
